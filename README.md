@@ -1,7 +1,7 @@
 <h1 align="center">Blog de Reversing</h1>
 
 <p align="center">
-  <img src="src/content/images/misc/[README]-001.png" alt="Logo" width="150"/>
+  <img src="src/content/images/misc/readme-001.png" alt="Logo" width="150"/>
 </p>
 
 ---
