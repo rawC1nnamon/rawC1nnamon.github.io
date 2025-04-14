@@ -8,14 +8,14 @@ export async function getStaticPaths() {
   
   return posts.map(post => {
     const pathParts = post.id.split('/');
-    const category = pathParts[0] || 'otros'; 
-    const slug = pathParts[1]?.replace('.md', ''); 
-
+    const category = pathParts.length > 1 ? pathParts[0] : 'otros';
+    const slug = pathParts.pop()?.replace('.md', '');
+    
     if (!slug) {
-      console.error('Post sin slug valido:', post.id);
+      console.error('Post no tiene slug válido:', post);
       return null;
     }
-
+    
     return {
       params: { slug: `${category}/${slug}` },
       props: { post },

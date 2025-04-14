@@ -9,32 +9,29 @@ const { title, pubDate, updatedDate, heroImage } = Astro.props;
 ---
 
 <Layout>
-  <article class="pb-10 grid place-items-center grid-cols-1">
+  <article class="pb-10 grid place-items-center grid-cols-1 font-serif">
     <div class="w-full grid place-items-center my-10 px-10 overflow-x-hidden">
-      {
-        heroImage && (
-          <img src={heroImage} alt="hero-image" class="rounded-2xl" />
-        )
-      }
+      {heroImage && (
+        <img src={heroImage} alt="hero-image" class="rounded-2xl" />
+      )}
     </div>
+
     <div
-      class="prose !max-w-[90vw] overflow-x-hidden !break-words brightness-110 prose-img:scale-90 prose-img:rounded-2xl prose-invert prose-hr:border-white prose-hr:bg-white px-4 md:px-0 md:max-w-4xl"
+      class="border border-white rounded-xl shadow-lg p-6 md:p-10 mx-4 md:mx-0 bg-white/5 backdrop-blur-sm text-white font-serif w-full max-w-4xl"
     >
-      <div>
-        <div>
+      <div class="prose prose-invert prose-img:scale-90 prose-img:rounded-2xl prose-hr:border-white prose-hr:bg-white prose-headings:font-serif">
+        <div class="mb-4 text-sm opacity-80">
           <FormattedDate date={pubDate} />
-          {
-            updatedDate && (
-              <div class="last-updated-on">
-                Last updated on <FormattedDate date={updatedDate} />
-              </div>
-            )
-          }
+          {updatedDate && (
+            <div class="italic text-xs mt-1">
+              Última actualización el <FormattedDate date={updatedDate} />
+            </div>
+          )}
         </div>
         <h1>{title}</h1>
         <hr />
+        <slot />
       </div>
-      <slot />
     </div>
   </article>
 </Layout>

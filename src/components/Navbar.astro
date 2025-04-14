@@ -1,5 +1,5 @@
 ---
-import { SITE_TITLE, NAV_LINKS as links } from "@/consts";
+import { NAV_LINKS as links } from "@/consts";
 ---
 
 <nav class="w-full !z-[9999] py-5 px-4 bg-black/90 backdrop-blur-sm">
@@ -11,11 +11,11 @@ import { SITE_TITLE, NAV_LINKS as links } from "@/consts";
         id="logo"
         class="pt-2 pb-1 !grid !place-items-center select-none leading-none hover:bg-black bg-white scale-110 hover:text-white text-black px-4 transition-all ease-in-out"
       >
-        {SITE_TITLE}
+        HOME
       </div>
     </a>
     <div class="flex flex-wrap gap-4 md:pr-5">
-      <div class="hidden md:block">/</div>
+      <div class="hidden md:block">|</div>
       {
         links.map((link) => {
           const href =
@@ -36,7 +36,7 @@ import { SITE_TITLE, NAV_LINKS as links } from "@/consts";
               >
                 <div>{link.title}</div>
               </a>
-              <div class="hidden md:block">/</div>
+              <div class="hidden md:block">|</div>
             </>
           );
         })
