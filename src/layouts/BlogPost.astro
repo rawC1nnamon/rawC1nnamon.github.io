@@ -2,6 +2,10 @@
 import type { CollectionEntry } from "astro:content";
 import FormattedDate from "@/components/Date.astro";
 import Layout from "@/layouts/Layout.astro";
+import '@fontsource/merriweather/400.css';
+import '@fontsource/merriweather/700.css';
+import '@fontsource/fira-code/400.css';
+import '@fontsource/fira-code/700.css';
 
 type Props = CollectionEntry<"blog">["data"];
 
@@ -19,7 +23,7 @@ const { title, pubDate, updatedDate, heroImage } = Astro.props;
     <div
       class="border border-white rounded-xl shadow-lg p-6 md:p-10 mx-4 md:mx-0 bg-white/5 backdrop-blur-sm text-white font-serif w-full max-w-4xl"
     >
-      <div class="prose prose-invert prose-img:scale-90 prose-img:rounded-2xl prose-hr:border-white prose-hr:bg-white prose-headings:font-serif">
+      <div class="prose prose-invert prose-img:scale-90 prose-img:rounded-2xl prose-hr:border-white prose-hr:bg-white prose-headings:font-serif max-w-none">
         <div class="mb-4 text-sm opacity-80">
           <FormattedDate date={pubDate} />
           {updatedDate && (
@@ -31,6 +35,62 @@ const { title, pubDate, updatedDate, heroImage } = Astro.props;
         <h1>{title}</h1>
         <hr />
         <slot />
+
+        <style is:global>
+          .prose {
+            font-family: 'Merriweather', serif;
+            line-height: 1.8;
+          }
+          
+          .prose h1, .prose h2, .prose h3, .prose h4, .prose h5, .prose h6 {
+            font-family: 'Merriweather', serif;
+            font-weight: 700;
+            line-height: 1.3;
+          }
+
+          .prose pre {
+            background-color: #000000;
+            border: 1px solid #333;
+            border-radius: 0.5rem;
+            padding: 1.25rem;
+            overflow-x: auto;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.9em;
+            line-height: 1.5;
+            margin: 1.5rem 0;
+            tab-size: 2;
+          }
+          
+          .prose code {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.9em;
+            background: #000000;
+            padding: 0.2em 0.4em;
+            border-radius: 0.2em;
+          }
+          
+          .prose pre code {
+            background: transparent;
+            padding: 0;
+            border-radius: 0;
+          }
+          
+          .prose p {
+            margin-bottom: 1.5em;
+          }
+          
+          .prose a {
+            text-decoration: underline;
+            text-decoration-thickness: 1px;
+            text-underline-offset: 2px;
+          }
+          
+          .prose blockquote {
+            font-style: italic;
+            border-left: 3px solid #fff;
+            padding-left: 1rem;
+          }
+        </style>
       </div>
     </div>
   </article>

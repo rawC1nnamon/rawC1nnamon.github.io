@@ -48,3 +48,24 @@ img,
   font-size: 3rem;
   user-select: none;
 }
+
+.prose {
+  font-family: "Merriweather", serif;
+  font-weight: 400;
+}
+
+.prose h1,
+.prose h2,
+.prose h3,
+.prose h4,
+.prose h5,
+.prose h6 {
+  font-family: "Merriweather", serif;
+  font-weight: 700;
+}
+
+.prose pre,
+.prose code {
+  font-family: "Fira Code", monospace !important;
+  font-weight: 400;
+}
