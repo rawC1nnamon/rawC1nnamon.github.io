@@ -35,5 +35,11 @@ Las categorías no tendrán un orden ni una frecuencia específica de publicaci�
 - Análisis de binarios.
 - Entre otros...
 
+---
+
+### Disclaimer
+
+Este contenido es únicamente con fines educativos y de investigación en seguridad informática. No promuevo, respaldo ni incentivo el uso de estas técnicas para perjudicar a terceros. Toda la información presentada aquí está destinada al estudio de técnicas de análisis estático y dinámico, así como al aprendizaje de ingeniería inversa. No me responsabilizo por el mal uso de este contenido.
+
 ---  
 ¡No olvides apoyar con una estrella ⭐!
