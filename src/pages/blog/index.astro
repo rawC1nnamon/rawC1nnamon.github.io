@@ -4,17 +4,27 @@ import BlogPostCard from '@/components/BlogPostCard.astro';
 import Layout from '@/layouts/Layout.astro';
 
 const allPosts = await getCollection('blog');
+
 const sortedPosts = allPosts.sort((a, b) => 
-  a.id.localeCompare(b.id)
-  // new Date(b.data.pubDate) - new Date(a.data.pubDate)
+  new Date(b.data.pubDate) - new Date(a.data.pubDate)
 );
 
-const groupedPosts = sortedPosts.reduce((acc, post) => {
+const recentPosts = sortedPosts.slice(0, 4);
+
+const groupedPosts = allPosts.reduce((acc, post) => {
   const category = post.id.split('/')[0] || 'otros';
   if (!acc[category]) acc[category] = [];
   acc[category].push(post);
   return acc;
 }, {});
+
+const sortedCategories = Object.keys(groupedPosts).sort((a, b) => a.localeCompare(b));
+
+sortedCategories.forEach(category => {
+  groupedPosts[category].sort((a, b) => 
+    a.data.title.localeCompare(b.data.title)
+  );
+});
 ---
 
 <Layout title="Blog">
@@ -22,13 +32,14 @@ const groupedPosts = sortedPosts.reduce((acc, post) => {
     <!-- Sidebar -->
     <aside class="hidden md:block w-64 p-4 bg-black border-r border-white overflow-y-auto fixed h-full z-10">
       <h2 class="text-white text-xl font-bold mb-4">Categorías</h2>
-      {Object.entries(groupedPosts).map(([category, posts]) => (
-        <details class="mb-2 group text-white" open>
+      {sortedCategories.map((category) => (
+        <details class="mb-2 group text-white">
           <summary class="cursor-pointer hover:text-gray-300 py-1 font-medium">
-            {category.charAt(0).toUpperCase() + category.slice(1)} <span class="text-white/50">({posts.length})</span>
+            {category.charAt(0).toUpperCase() + category.slice(1)} 
+            <span class="text-white/50">({groupedPosts[category].length})</span>
           </summary>
           <ul class="ml-4 mt-1">
-            {posts.map(post => {
+            {groupedPosts[category].map(post => {
               const slug = post.id.split('/')[1]?.replace('.md', '');
               return (
                 <li class="mb-1">
@@ -49,8 +60,9 @@ const groupedPosts = sortedPosts.reduce((acc, post) => {
     <!-- Main Content -->
     <main class="w-full md:ml-64 p-6">
       <h1 class="text-4xl font-bold mb-6">Blog</h1>
+      <h2 class="text-2xl font-semibold mb-4">Últimos posts</h2>
       <div class="grid gap-8 md:grid-cols-2">
-        {sortedPosts.map(post => <BlogPostCard post={post} />)}
+        {recentPosts.map(post => <BlogPostCard post={post} />)}
       </div>
     </main>
   </div>
