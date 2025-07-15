@@ -9,23 +9,23 @@ pubDate: "2025-07-14"
 `Tools:` adb, frida, jadx, rizin.
 
 ---
+
 ## Overview
 
 After installing the apk, we'll unzip it to get a general overview of its structure:
 
 ```bash
 ❯ mkdir decompiled
-
 ❯ unzip com.mobilehackinglab.strings.apk -d decompiled
-
 ❯ ls decompiled/
- AndroidManifest.xml  classes4.dex       META-INF
- classes.dex          DebugProbesKt.bin  res
- classes2.dex         kotlin             resources.arsc
- classes3.dex         lib                
+AndroidManifest.xml  classes4.dex       META-INF
+classes.dex          DebugProbesKt.bin  res
+classes2.dex         kotlin             resources.arsc
+classes3.dex         lib                
 ```
 
 Keep this directory in your workspace, as we'll use it later. Next, we'll open the application in our device:
+
 <div style="display: flex; justify-content: center; margin: 20px auto; max-width: 800px; align-items: center;">
   <div style="flex: 0 0 180px; margin-right: 25px;">
     <img src="/images/Write-ups/strings/app-init.png" style="width: 100%; height: auto; max-width: 180px; border: 1px solid #ddd; box-shadow: 0 2px 4px rgba(0,0,0,0.1);"/>
@@ -33,36 +33,40 @@ Keep this directory in your workspace, as we'll use it later. Next, we'll open t
       Figure 1: App initialization
     </p>
   </div>
-
   <div style="flex: 1; text-align: justify; padding-right: 5%;">
     <p style="margin-left: 15px; line-height: 1.5;">As we can see, the application is indicating that it's using native code (Hello from C++). With this in mind, we'll see two native libraries in <code>decompiled/lib/x86_64</code>, <strong>libchallenge.so</strong> and <strong>libflag.so</strong>, those are ELF shared objects that can be analyzed using some decompiler, in our case, <strong>Rizin</strong>.</p>
     <p style="margin-left: 15px; line-height: 1.5;">However, we'll first see the application classes using jadx, this with the goal of understanding the application behavior.</p>
   </div>
 </div>
-```❯ jadx-gui com.mobilehackinglab.strings.apk &```
+
+```bash
+❯ jadx-gui com.mobilehackinglab.strings.apk &
+```
+
 <div align="center" style="margin: 20px 0;">
   <img src="/images/Write-ups/strings/jadx-manifest.png" style="max-width: 100%; height: auto; display: block; margin: 0 auto; border: 1px solid #ddd; box-shadow: 0 2px 4px rgba(0,0,0,0.1);"/>
   <p style="text-align: center; font-style: italic; margin-top: 8px; color: #555;">
     Figure 2: AndroidManifest.xml analysis in jadx
   </p>
 </div>
+
 In the Android manifest we see two activities, `MainActivity` and `Activity2`, both can be exported, which means we could **launch** the activity. First, we'll see the `MainActivity` (**Navigation > Go to main Activity**):
+
 <div align="center" style="margin: 20px 0;">
   <img src="/images/Write-ups/strings/jadx-main.png" style="max-width: 100%; height: auto; display: block; margin: 0 auto; border: 1px solid #ddd; box-shadow: 0 2px 4px rgba(0,0,0,0.1);"/>
   <p style="text-align: center; font-style: italic; margin-top: 8px; color: #555;">
     Figure 3: MainActivity analysis in jadx
   </p>
 </div>
+
 There is a behavior easy to understand, the app simply loads **libchallenge.so** library, then, use a native function called `stringFromJNI` and show its result. Let's see this function using **Rizin**:
 
 ```bash
 ❯ ls decompiled/lib/
- arm64-v8a/  armeabi-v7a/  x86/  x86_64/
+arm64-v8a/  armeabi-v7a/  x86/  x86_64/
  
 ❯ ls decompiled/lib/x86_64 # I choose x86_64 just for convenience
-
-❯ ls decompiled/lib/x86_64/
-  libchallenge.so  libflag.so
+libchallenge.so  libflag.so
   
 ❯ rizin -c "aa;afl~stringFromJNI" decompiled/lib/x86_64/libchallenge.so
 [x] Analyze all flags starting with sym. and entry0 (aa)
@@ -100,15 +104,18 @@ undefined8 sym.Java_com_mobilehackinglab_challenge_MainActivity_stringFromJNI(in
 Apparently, this function print "Hello from C++", that is the string we see on the app. However, we don't see a reference to `Activity2` in the main activity, therefore, we'll see its behavior and check if its useful.
 
 ---
+
 ## Starting an activity
 
 Clicking `com.mobilehackinglab.challenge.Activity2` in the Android manifest, jadx will redirect us to `Activity2` class:
+
 <div align="center" style="margin: 20px 0;">
   <img src="/images/Write-ups/strings/jadx-activity2.png" style="max-width: 100%; height: auto; display: block; margin: 0 auto; border: 1px solid #ddd; box-shadow: 0 2px 4px rgba(0,0,0,0.1);"/>
   <p style="text-align: center; font-style: italic; margin-top: 8px; color: #555;">
     Figure 4: Activity2 analysis in jadx
   </p>
 </div>
+
 This activity load **libflag.so** and call a native function called `getflag` as long as some conditions were met. The first two conditions, `isActionView` and `isU1Matching`, the first one verify if the activity is called with the `VIEW` action intent, the second one verify an special shared preference. The latter doesn't matter, cause we could hook `Intrinsics.areEqual` with **Frida** to always return true.
 
 ```js
@@ -176,12 +183,12 @@ Attaching...
 
 Starting: Intent { act=android.intent.action.MAIN cat=[android.intent.category.LAUNCHER] dat=mhl://labs/... cmp=com.mobilehackinglab.challenge/.Activity2 }
 ```
+
 <div style="display: flex; justify-content: center; margin: 20px auto; max-width: 800px; align-items: center;">
   <div style="flex: 1; text-align: justify; padding-right: 5%;">
     <p style="margin-left: 15px; line-height: 1.5;">It's doing well, the application is showing us the string returned by <code>getflag</code> function, which is "success". Apparently, <code>getflag</code> doesn't return the flag. Let's see the challenge hints.</p>
     <p style="margin-left: 15px; line-height: 1.5;">One of these says the following: "- Utilize Frida for tracing or employ Frida's memory scanning.", this suggest that something is dynamically allocated in memory.</p>
   </div>
-  
   <div style="flex: 0 0 180px; margin-right: 25px;">
     <img src="/images/Write-ups/strings/app-activity2.png" style="width: 100%; height: auto; max-width: 180px; border: 1px solid #ddd; box-shadow: 0 2px 4px rgba(0,0,0,0.1);"/>
     <p style="text-align: center; font-style: italic; margin-top: 8px; color: #555; font-size: 12px;">
@@ -189,6 +196,7 @@ Starting: Intent { act=android.intent.action.MAIN cat=[android.intent.category.L
     </p>
   </div>
 </div>
+
 ## Scanning memory with Frida
 
 We need to modify our Frida script in order to look for patterns in the application memory space, but first, we'll hook `getflag` native function:
