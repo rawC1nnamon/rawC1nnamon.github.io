@@ -4,12 +4,9 @@ description: "MHL - strings write-up"
 pubDate: "2025-07-14"
 ---
 
-# Strings - Write Up
-
-> [!NOTE] 
-> `Challenge:` [Strings](https://www.mobilehackinglab.com/course/lab-strings).
-> `Device:` [redroid/redroid:13.0.0-latest](https://github.com/remote-android/redroid-doc).
-> `Tools:` adb, frida, jadx, rizin.
+`Challenge:` [Strings](https://www.mobilehackinglab.com/course/lab-strings).
+`Device:` [redroid/redroid:13.0.0-latest](https://github.com/remote-android/redroid-doc).
+`Tools:` adb, frida, jadx, rizin.
 
 ---
 ## Overview
@@ -42,10 +39,7 @@ Keep this directory in your workspace, as we'll use it later. Next, we'll open t
     <p style="margin-left: 15px; line-height: 1.5;">However, we'll first see the application classes using jadx, this with the goal of understanding the application behavior.</p>
   </div>
 </div>
-
-```bash
-❯ jadx-gui com.mobilehackinglab.strings.apk &
-```
+```❯ jadx-gui com.mobilehackinglab.strings.apk &```
 <div align="center" style="margin: 20px 0;">
   <img src="/images/Write-ups/strings/jadx-manifest.png" style="max-width: 100%; height: auto; display: block; margin: 0 auto; border: 1px solid #ddd; box-shadow: 0 2px 4px rgba(0,0,0,0.1);"/>
   <p style="text-align: center; font-style: italic; margin-top: 8px; color: #555;">
@@ -115,7 +109,7 @@ Clicking `com.mobilehackinglab.challenge.Activity2` in the Android manifest, jad
     Figure 4: Activity2 analysis in jadx
   </p>
 </div>
-This activity load **libflag.so** and call a native function called `getflag` as long as some conditions were met. The first two conditions, ``isActionView`` and `isU1Matching`, the first one verify if the activity is called with the `VIEW` action intent, the second one verify an special shared preference. The latter doesn't matter, cause we could hook `Intrinsics.areEqual` with **Frida** to always return true.
+This activity load **libflag.so** and call a native function called `getflag` as long as some conditions were met. The first two conditions, `isActionView` and `isU1Matching`, the first one verify if the activity is called with the `VIEW` action intent, the second one verify an special shared preference. The latter doesn't matter, cause we could hook `Intrinsics.areEqual` with **Frida** to always return true.
 
 ```js
 Java.perform(() => {
