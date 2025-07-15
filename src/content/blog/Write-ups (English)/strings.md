@@ -5,7 +5,9 @@ pubDate: "2025-07-14"
 ---
 
 `Challenge:` [Strings](https://www.mobilehackinglab.com/course/lab-strings).
+
 `Device:` [redroid/redroid:13.0.0-latest](https://github.com/remote-android/redroid-doc).
+
 `Tools:` adb, frida, jadx, rizin.
 
 ---
