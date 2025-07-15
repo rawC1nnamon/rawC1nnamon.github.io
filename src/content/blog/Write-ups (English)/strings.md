@@ -42,6 +42,7 @@ Keep this directory in your workspace, as we'll use it later. Next, we'll open t
     <p style="margin-left: 15px; line-height: 1.5;">However, we'll first see the application classes using jadx, this with the goal of understanding the application behavior.</p>
   </div>
 </div>
+
 ```bash
 ❯ jadx-gui com.mobilehackinglab.strings.apk &
 ```
@@ -55,7 +56,7 @@ In the Android manifest we see two activities, `MainActivity` and `Activity2`, b
 <div align="center" style="margin: 20px 0;">
   <img src="/images/Write-ups/strings/jadx-main.png" style="max-width: 100%; height: auto; display: block; margin: 0 auto; border: 1px solid #ddd; box-shadow: 0 2px 4px rgba(0,0,0,0.1);"/>
   <p style="text-align: center; font-style: italic; margin-top: 8px; color: #555;">
-    Figure 2: MainActivity analysis in jadx
+    Figure 3: MainActivity analysis in jadx
   </p>
 </div>
 There is a behavior easy to understand, the app simply loads **libchallenge.so** library, then, use a native function called `stringFromJNI` and show its result. Let's see this function using **Rizin**:
@@ -111,7 +112,7 @@ Clicking `com.mobilehackinglab.challenge.Activity2` in the Android manifest, jad
 <div align="center" style="margin: 20px 0;">
   <img src="/images/Write-ups/strings/jadx-activity2.png" style="max-width: 100%; height: auto; display: block; margin: 0 auto; border: 1px solid #ddd; box-shadow: 0 2px 4px rgba(0,0,0,0.1);"/>
   <p style="text-align: center; font-style: italic; margin-top: 8px; color: #555;">
-    Figure 3: Activity2 analysis in jadx
+    Figure 4: Activity2 analysis in jadx
   </p>
 </div>
 This activity load **libflag.so** and call a native function called `getflag` as long as some conditions were met. The first two conditions, ``isActionView`` and `isU1Matching`, the first one verify if the activity is called with the `VIEW` action intent, the second one verify an special shared preference. The latter doesn't matter, cause we could hook `Intrinsics.areEqual` with **Frida** to always return true.
@@ -190,7 +191,7 @@ Starting: Intent { act=android.intent.action.MAIN cat=[android.intent.category.L
   <div style="flex: 0 0 180px; margin-right: 25px;">
     <img src="/images/Write-ups/strings/app-activity2.png" style="width: 100%; height: auto; max-width: 180px; border: 1px solid #ddd; box-shadow: 0 2px 4px rgba(0,0,0,0.1);"/>
     <p style="text-align: center; font-style: italic; margin-top: 8px; color: #555; font-size: 12px;">
-      Figure 4: Executing activity2
+      Figure 5: Executing activity2
     </p>
   </div>
 </div>
