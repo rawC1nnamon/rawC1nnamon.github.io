@@ -1,3 +1,9 @@
+---
+title: "[Android] MHL - strings"
+description: "MHL - strings write-up"
+pubDate: "2025-07-14"
+---
+
 # Strings - Write Up
 
 > [!NOTE] 
