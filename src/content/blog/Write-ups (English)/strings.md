@@ -4,11 +4,22 @@ description: "MHL - strings write-up"
 pubDate: "2025-07-14"
 ---
 
-`Challenge:` [Strings](https://www.mobilehackinglab.com/course/lab-strings).
-
-`Device:` [redroid/redroid:13.0.0-latest](https://github.com/remote-android/redroid-doc).
-
-`Tools:` adb, frida, jadx, rizin.
+<div style="display: flex; flex-wrap: wrap; align-items: flex-start;">
+  <div style="flex: 1 1 300px; background-color: rgba(70, 130, 180, 0.1); color: #fff; margin: 1em 0; line-height: 1.4; font-size: 1rem; border-radius: 4px; overflow: hidden;">
+    <div style="background-color: #6CA6D9; color: #000; padding: 0.5rem 1rem; border-top-right-radius: 4px; font-weight: bold;">
+      🔎 Note
+    </div>
+    <div style="padding: 0.5rem 1rem; border-bottom: 1px solid rgba(108, 166, 217, 0.2);">
+      <strong>Challenge: </strong> <a href="https://www.mobilehackinglab.com/course/lab-strings" style="color: #4682B4; text-decoration: none;">Config Editor</a>
+    </div>
+    <div style="padding: 0.5rem 1rem; border-bottom: 1px solid rgba(108, 166, 217, 0.2);">
+      <strong>Device: </strong> <a href="https://github.com/remote-android/redroid-doc" style="color: #4682B4; text-decoration: none;">redroid/redroid:13.0.0-latest</a>
+    </div>
+    <div style="padding: 0.5rem 1rem;">
+      <strong>Tools: </strong> adb, frida, jadx, rizin.
+    </div>
+  </div>
+</div>
 
 ---
 
